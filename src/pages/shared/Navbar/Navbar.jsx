@@ -1,0 +1,77 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+
+import logo from "../../../assets/zToys-logo.png";
+
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <div className="navbar h-24 mb-6 ">
+        <div onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+          <span>
+            {isOpen === true ? (
+              <XMarkIcon className="h-6 w-6 text-black font-bold" />
+            ) : (
+              <Bars3Icon className="h-6 w-6 text-black font-bold" />
+            )}
+          </span>
+        </div>
+        <div className="navbar-start flex items-center  ">
+          <Link to="/" className="btn btn-ghost text-xl">
+            <img src={logo} alt="" className="h-24 w-44 " />
+          </Link>
+        </div>
+        <div className="navbar-center ">
+          <ul
+            className={`md:flex md:items-center md:z-auto md:static absolute w-full md:w-auto py-4 md:pl-0 pl-7 md:opacity-100 transition-all ease-in duration-500 ${
+              isOpen
+                ? "opacity-100 top-[80px]"
+                : "opacity-0 absolute -left-full md:left-0"
+            }`}
+          >
+            {/* <ul
+            className={`md:flex md:items-center  md:z-auto md:static absolute  w-full left-0 md:w-auto md:py-0 py-4 md:pl-0 pl-7 md:opacity-100 ${
+              isOpen ? "opacity-100 top-[80px]" : "opacity-0 top-[-400px]"
+            } transition-all ease-in duration-500`}
+          > */}
+            <li className="mx-4 md:my-0 font-bold">
+              <Link to="/" className="text-xl hover:text-cyan-500 duration-500">
+                Home
+              </Link>
+            </li>
+            <li className="mx-4 md:my-0 font-bold">
+              <Link to="#" className="text-xl hover:text-cyan-500 duration-500">
+                About Us
+              </Link>
+            </li>
+            <li className="mx-4 md:my-0 font-bold">
+              <Link to="#" className="text-xl hover:text-cyan-500 duration-500">
+                Blog
+              </Link>
+            </li>
+
+            <li className="mx-4 md:my-0 font-bold">
+              <Link to="#" className="text-xl hover:text-cyan-500 duration-500">
+                Contact Us
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="navbar-end">
+          <Link
+            to="/login"
+            className="px-6 ml-4 mr-12 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
+          >
+            Login
+          </Link>
+        </div>
+      </div>
+      <hr className="" />
+    </div>
+  );
+};
+
+export default Navbar;
