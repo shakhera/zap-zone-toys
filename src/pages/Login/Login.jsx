@@ -1,7 +1,49 @@
-import React from "react";
+import React, { useContext, useRef, useState } from "react";
 import login from "../../assets/login/loginn.avif";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Provider/AuthProvider";
 const Login = () => {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const { userLogin, resetPassword } = useContext(AuthContext);
+  const emailRef = useRef();
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    setSuccess("");
+    setError("");
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    userLogin(email, password)
+      .then((result) => {
+        const loggesUser = result.user;
+        console.log(loggesUser);
+        setSuccess("user login successfullay");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setError(error.message);
+      });
+  };
+  const handleResetPassword = (event) => {
+    const emaill = emailRef.current.value;
+    console.log(emaill);
+    if (!emaill) {
+      alert("Please provide a valid email tlo reset password");
+      return;
+    }
+    resetPassword(emaill)
+      .then(() => {
+        alert("Please cheak your email");
+      })
+      .catch((error) => {
+        console.error(error.message);
+        setError(error.message);
+      });
+  };
   return (
     <div>
       <div className="hero min-h-screen ">
@@ -10,7 +52,7 @@ const Login = () => {
             <img src={login} alt="" />
           </div>
           <div className="card shrink-0 w-full md:w-1/2 shadow-2xl bg-base-100">
-            <form className="card-body">
+            <form onSubmit={handleLogin} className="card-body">
               <h1 className="text-5xl font-bold text-center">Login</h1>
               <div className="form-control">
                 <label className="label">
@@ -19,6 +61,7 @@ const Login = () => {
                 <input
                   type="email"
                   name="email"
+                  ref={emailRef}
                   placeholder="email"
                   className="input input-bordered"
                   required
@@ -36,7 +79,10 @@ const Login = () => {
                   required
                 />
                 <label className="label">
-                  <button className="label-text-alt link link-hover">
+                  <button
+                    onClick={handleResetPassword}
+                    className="label-text-alt link link-hover"
+                  >
                     Forgot password?
                   </button>
                 </label>
@@ -60,6 +106,16 @@ const Login = () => {
                 </label>
               </div>
             </form>
+            <div>
+              <label className="label ">
+                <p className="label-text-alt text-2xl text-center text-green-500">
+                  {success}
+                </p>
+                <p className="label-text-alt text-2xl text-center text-red-500">
+                  {error}
+                </p>
+              </label>
+            </div>
           </div>
         </div>
       </div>

@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { FaUser } from "react-icons/fa";
 
 import logo from "../../../assets/zToys-logo.png";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hover, setHover] = useState(false);
+  const { user, logOut } = useContext(AuthContext);
 
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => console.error(error));
+  };
   return (
     <div>
       <div className="navbar h-24 mb-6 ">
@@ -61,12 +70,43 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="navbar-end">
-          <Link
-            to="/login"
-            className="px-6 ml-4 mr-12 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
-          >
-            Login
-          </Link>
+          {user ? (
+            <>
+              <>
+                <div
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                >
+                  {user.photoURL ? (
+                    <>
+                      <img
+                        src={user.photoURL}
+                        alt=""
+                        className="rounded-full h-10 w-10"
+                      />
+                      {hover && <span>{user.displayName}</span>}
+                    </>
+                  ) : (
+                    <FaUser className="size-8"></FaUser>
+                  )}
+                </div>
+              </>
+
+              <button
+                onClick={handleLogOut}
+                className="px-6 ml-4 mr-12 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="px-6 ml-4 mr-12 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
       <hr className="" />

@@ -1,8 +1,58 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import regLogo from "../../assets/login/account.avif";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Provider/AuthProvider";
 
-const Register = () => {
+const SignUp = () => {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+
+  const handleSignUp = (event) => {
+    event.preventDefault();
+    setSuccess("");
+    setError("");
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    const confirm = form.confirm.value;
+    const photoUrl = form.photoUrl.value;
+    console.log(name, email, password, photoUrl);
+
+    if (password !== confirm) {
+      setError("your password does not match");
+      return;
+    } else if (password.length < 6) {
+      setError("password length must be 6 or longer");
+      return;
+    }
+
+    createUser(email, password)
+      .then((result) => {
+        const loggesUser = result.user;
+        console.log(loggesUser);
+        setSuccess("user create successfullay");
+        handleUpdateProfile(name, photoUrl);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setError(error.message);
+      });
+  };
+  const handleUpdateProfile = (name, photoUrl) => {
+    const profile = {
+      displayName: name,
+      photoURL: photoUrl,
+    };
+    console.log(profile);
+    updateUserProfile(profile)
+      .then(() => {})
+      .catch((error) => {
+        console.error(error.message);
+      });
+  };
   return (
     <div>
       <div className="hero min-h-screen ">
@@ -11,7 +61,7 @@ const Register = () => {
             <img src={regLogo} alt="" />
           </div>
           <div className="card shrink-0 w-full md:w-1/2 shadow-2xl bg-base-100">
-            <form className="card-body">
+            <form onSubmit={handleSignUp} className="card-body">
               <h1 className="text-5xl font-bold text-center text-slate-600">
                 Create An Account
               </h1>
@@ -90,6 +140,16 @@ const Register = () => {
                 </label>
               </div>
             </form>
+            <div>
+              <label className="label ">
+                <p className="label-text-alt text-xl text-center text-green-500">
+                  {success}
+                </p>
+                <p className="label-text-alt text-xl text-center text-red-500">
+                  {error}
+                </p>
+              </label>
+            </div>
           </div>
         </div>
       </div>
@@ -97,4 +157,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SignUp;
