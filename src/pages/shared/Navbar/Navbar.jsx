@@ -18,8 +18,11 @@ const Navbar = () => {
   };
   return (
     <div>
-      <div className="navbar h-24 mb-6 ">
-        <div onClick={() => setIsOpen(!isOpen)} className="md:hidden">
+      <div className="navbar h-24 mb-6 px-12">
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden w-full flex-wrap"
+        >
           <span>
             {isOpen === true ? (
               <XMarkIcon className="h-6 w-6 text-black font-bold" />
@@ -28,9 +31,12 @@ const Navbar = () => {
             )}
           </span>
         </div>
-        <div className="navbar-start flex items-center  ">
-          <Link to="/" className="btn btn-ghost text-xl">
-            <img src={logo} alt="" className="h-24 w-44 " />
+        <div className="navbar-start  ">
+          <Link to="/" className="flex flex-col items-center justify-center">
+            <h2 className="text-3xl font-bold">
+              Zap<span className="text-red-500">Zone</span>Toys
+            </h2>
+            <img src={logo} alt="" className=" w-20 right-0 " />
           </Link>
         </div>
         <div className="navbar-center ">
@@ -94,7 +100,7 @@ const Navbar = () => {
 
               <button
                 onClick={handleLogOut}
-                className="px-6 ml-4 mr-12 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="px-6 ml-4 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
                 Logout
               </button>
@@ -102,7 +108,7 @@ const Navbar = () => {
           ) : (
             <Link
               to="/login"
-              className="px-6 ml-4 mr-12 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              className="px-6 ml-4 py-3 text-white text-1xl font-bold rounded-lg transition duration-300 ease-in-out bg-gradient-to-r from-red-400 to-slate-600 hover:from-teal-800 hover:to-cyan-400 hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               Login
             </Link>
